@@ -55,7 +55,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         mDrawPaint!!.strokeJoin = Paint.Join.ROUND // This is for store join
         mDrawPaint!!.strokeCap = Paint.Cap.ROUND // This is for stroke Cap
         mCanvasPaint = Paint(Paint.DITHER_FLAG) // Paint flag that enables dithering when blitting.
-        mBrushSize = 20.toFloat()
+        //mBrushSize = 20.toFloat() //Here the default or we can initial brush size
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -97,6 +97,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
             canvas.drawPath(mDrawPath!!, mDrawPaint!!)
         }
     }
+
     /**
      * This method acts as an event listener when a touch
      * event is detected on the device.
@@ -136,8 +137,13 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         return true
     }
 
-    fun setSizeForBrush(newSize : Float){
-        mBrushSize = TypedValue
+    fun setSizeForBrush(newSize: Float) {
+        mBrushSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            newSize, resources.displayMetrics
+        )
+        mDrawPaint!!.strokeWidth = mBrushSize
+
     }
 
     //An inner class for custom path with two params as color and stroke size.
